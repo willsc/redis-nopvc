@@ -8,8 +8,11 @@ redis-cluster-2   1/1     Running   0          2m27s
 redis-cluster-3   1/1     Running   0          2m5s
 redis-cluster-4   1/1     Running   0          103s
 redis-cluster-5   1/1     Running   0          82s
+
 ❯ kubectl get pods -n redis -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379' | sed 's/637910/6379 10/g'
 10.104.2.25:6379 10.104.0.25:6379 10.104.1.28:6379 10.104.0.26:6379 10.104.1.29:6379 10.104.2.26:6379%
+
+
 ❯ kubectl exec -it redis-cluster-0 -- redis-cli cluster info
 cluster_state:fail
 cluster_slots_assigned:16384
