@@ -13,19 +13,7 @@ redis-cluster-5   1/1     Running   0          82s
 10.104.2.25:6379 10.104.0.25:6379 10.104.1.28:6379 10.104.0.26:6379 10.104.1.29:6379 10.104.2.26:6379%
 
 
-❯ kubectl exec -it redis-cluster-0 -- redis-cli cluster info
-cluster_state:fail
-cluster_slots_assigned:16384
-cluster_slots_ok:5461
-cluster_slots_pfail:10923
-cluster_slots_fail:0
-cluster_known_nodes:6
-cluster_size:3
-cluster_current_epoch:6
-cluster_my_epoch:1
-cluster_stats_messages_ping_sent:4317
-cluster_stats_messages_sent:4317
-cluster_stats_messages_received:0
+
 ❯ kubectl get pods -n redis -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379' | sed 's/637910/6379 10/g'
 ❯ kubectl exec -it -n redis redis-cluster-0 -- redis-cli cluster info
 cluster_state:fail
@@ -39,8 +27,32 @@ cluster_current_epoch:0
 cluster_my_epoch:0
 cluster_stats_messages_sent:0
 cluster_stats_messages_received:0
+
+
+kubectl exec -it -n redis  redis-cluster-0 -- redis-cli cluster info
+cluster_state:ok
+cluster_slots_assigned:16384
+cluster_slots_ok:16384
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:6
+cluster_size:3
+cluster_current_epoch:6
+cluster_my_epoch:1
+cluster_stats_messages_ping_sent:11927
+cluster_stats_messages_pong_sent:11882
+cluster_stats_messages_sent:23809
+cluster_stats_messages_ping_received:11877
+cluster_stats_messages_pong_received:11927
+cluster_stats_messages_meet_received:5
+cluster_stats_messages_received:23809
+
+
+
 ❯ kubectl get pods -n redis  -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379' | sed 's/637910/6379 10/g'
 10.104.2.25:6379 10.104.0.25:6379 10.104.1.28:6379 10.104.0.26:6379 10.104.1.29:6379 10.104.2.26:6379%
+
+
 ❯ kubectl exec -it -n redis redis-cluster-0 -- redis-cli --cluster create 10.104.2.25:6379 10.104.0.25:6379 10.104.1.28:6379 10.104.0.26:6379 10.104.1.29:6379 10.104.2.26:6379 --cluster-replicas 1
 >>> Performing hash slots allocation on 6 nodes...
 Master[0] -> Slots 0 - 5460
