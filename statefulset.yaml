@@ -44,4 +44,4 @@ spec:
             - -c
             - "redis-cli -h $(hostname) ping"
           initialDelaySeconds: 20
-          periodSeconds: 3
+          periodSeconds: 4

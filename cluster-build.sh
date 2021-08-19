@@ -1,6 +1,7 @@
 #!/bin/bash
 PORT=6379
 
+#The good old days of interesting work
 
 foobar=`kubectl get pods -n redis -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379' | sed 's/637910/6379 10/g' | sed 's/:6379//g'|sed s'/%//g' |sed 's/ /,/g'`
 IFS=',' read -r -a array <<< "$foobar"
